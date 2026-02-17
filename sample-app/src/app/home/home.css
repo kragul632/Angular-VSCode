@@ -1,0 +1,23 @@
+/* Tighten the definition list labels/values */
+.specs-label,
+.specs-value {
+  margin-bottom: .25rem;
+  line-height: 1.2;
+}
+
+.specs-label {
+  font-size: .875rem; /* labels slightly smaller */
+}
+
+.specs-value {
+  font-size: .95rem;  /* values slightly larger */
+  word-break: break-word;
+}
+
+/* Optional: clamp very long values (like Description) to 2 lines */
+.specs-value {
+  display: -webkit-box;
+  
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

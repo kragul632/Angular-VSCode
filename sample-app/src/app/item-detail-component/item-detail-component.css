@@ -1,0 +1,25 @@
+/* Each spec on one line, close spacing */
+.spec-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;           /* 👈 VERY close spacing between label & value */
+  margin-bottom: 0.25rem; /* small row spacing */
+  line-height: 1.2;
+}
+
+/* Label styling */
+.spec-label {
+  font-size: 0.9rem;
+  color: #6c757d; /* Bootstrap text-secondary */
+  white-space: nowrap;    /* don’t wrap before ":" */
+}
+
+/* Value styling */
+.spec-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #212529; /* text-body */
+  margin: 0;
+  word-break: break-word; /* prevent awkward overflow */
+}
+

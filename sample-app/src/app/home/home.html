@@ -1,0 +1,75 @@
+<div class="container my-4">
+  <h2 class="h4 mb-3">Objects from API</h2>
+
+  <!-- Search -->
+  <div class="row g-2 mb-3 justify-content-end">
+    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+      <input
+        type="search"
+        class="form-control"
+        placeholder="Search by name or spec (e.g., color, 128 GB, price)"
+        [(ngModel)]="searchTerm"
+        aria-label="Search items"
+      />
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="alert alert-info" role="alert">
+    No data yet — fetching from API...
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="!loading && error" class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+
+  <!-- Grid (uses filtered) -->
+  <div class="row g-3" *ngIf="!loading && !error && filtered.length > 0">
+    <div class="col-12 col-md-6 col-lg-4"
+         *ngFor="let item of filtered; trackBy: trackById">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title mb-2">{{ item.name }}</h5>
+
+          <!-- Curated specs (tight label/value) -->
+          <ng-container *ngIf="item.specs && item.specs.length; else noSpecs">
+            <dl class="row mb-0 lh-sm specs">
+              <ng-container *ngFor="let s of item.specs">
+                <dt class="col-5 col-sm-4 text-secondary specs-label">
+                  {{ s.label }}
+                </dt>
+                <dd class="col-7 col-sm-8 fw-semibold text-body specs-value">
+                  {{ s.value }}
+                </dd>
+              </ng-container>
+            </dl>
+          </ng-container>
+
+          <ng-template #noSpecs>
+            <p class="text-body-secondary mb-0">No specs available.</p>
+          </ng-template>
+
+          <!-- Full-card link -->
+          <a class="stretched-link"
+             [routerLink]="['/items', item.id]"
+             [attr.aria-label]="'Open ' + (item.name || 'item')">
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No matches (search active but filtered empty) -->
+  <div *ngIf="!loading && !error && filtered.length === 0 && (searchTerm || '').length > 0"
+       class="alert alert-warning" role="alert">
+    No results for "<strong>{{ searchTerm }}</strong>".
+  </div>
+
+  <!-- Empty (no data without search) -->
+  <div *ngIf="!loading && !error && data.length === 0 && (searchTerm || '').length === 0"
+       class="alert alert-warning" role="alert">
+    No items found.
+  </div>
+</div>
+``
