@@ -1,3 +1,5 @@
+<!-- src/app/item-detail-component/item-detail-component.html -->
+
 <!-- Loading state -->
 <div class="container my-4" *ngIf="loading" aria-live="polite">
   <div class="d-flex align-items-center">
@@ -28,9 +30,9 @@
   <div class="mb-2">
     <button class="btn btn-outline-secondary" (click)="goBack()">Back</button>
   </div>
+
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h2 class="h4 m-0">{{ it.name }}</h2>
-    
   </div>
 
   <div class="card">
@@ -40,9 +42,9 @@
       <ng-container *ngIf="itemSpecs && itemSpecs.length; else noSpecs">
         <ul class="list-unstyled mb-0">
           <li class="spec-row" *ngFor="let s of itemSpecs">
-  <span class="spec-label">{{ s.label }}:</span>
-  <strong class="spec-value">{{ s.value }}</strong>
-</li>
+            <span class="spec-label">{{ s.label }}:</span>
+            <strong class="spec-value">{{ s.value }}</strong>
+          </li>
         </ul>
       </ng-container>
 
@@ -51,12 +53,53 @@
       </ng-template>
     </div>
   </div>
+
+  <!-- Update & Delete area -->
+  <div class="mt-3 d-flex gap-2 justify-content-end" *ngIf="item.id as theId">
+
+    <!-- Read-only -->
+    <button
+      *ngIf="isReadOnlyId(theId); else editDelete"
+      class="btn btn-secondary"
+      disabled
+      title="Demo items (IDs 1–13) cannot be updated or deleted on the public API"
+    >
+      Update (not allowed for demo items)
+    </button>
+    <button
+      *ngIf="isReadOnlyId(theId)"
+      class="btn btn-danger"
+      disabled
+      title="Demo items (IDs 1–13) cannot be updated or deleted on the public API"
+    >
+      Delete (not allowed for demo items)
+    </button>
+
+    <ng-template #editDelete>
+      <a class="btn btn-primary" [routerLink]="['/items', theId, 'edit']">Update</a>
+
+      <button
+        class="btn btn-danger"
+        (click)="deleteItem(theId)"
+        [disabled]="deleting"
+        [attr.aria-busy]="deleting ? 'true' : null"
+      >
+        <span *ngIf="!deleting; else delTpl">Delete</span>
+      </button>
+
+      <ng-template #delTpl>
+        <span class="d-inline-flex align-items-center">
+          <span class="spinner-border spinner-border-sm me-2"></span>
+          Deleting...
+        </span>
+      </ng-template>
+    </ng-template>
+  </div>
 </div>
 
 <!-- Final fallback -->
 <div class="container my-4" *ngIf="!loading && !error && !item">
-  <div class="alert alert-warning" role="alert">
-    Item not available.
-  </div>
+  <div class="alert alert-warning">Item not available.</div>
   <button class="btn btn-outline-secondary" (click)="goBack()">← Back</button>
 </div>
+``

@@ -1,12 +1,41 @@
+<!-- src/app/home/home.html -->
 <div class="container my-4">
-  <h2 class="h4 mb-3">Objects from API</h2>
+  <!-- Success message (e.g., after delete) -->
+  <div *ngIf="successMessage" class="alert alert-success mb-3" role="alert" aria-live="polite">
+    {{ successMessage }}
+  </div>
 
-  <!-- Search -->
-  <div class="row g-2 mb-3 justify-content-end">
-    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+  <!-- Header row with title (left) and tools (right) -->
+  <div class="d-flex align-items-center mb-3">
+    <h2 class="h4 m-0">Objects from API</h2>
+
+    <!-- Right-side tools: search + add new -->
+    <div class="ms-auto d-flex align-items-center gap-2">
+      <!-- Search (right-aligned, compact width) -->
+      <div class="d-none d-md-block" style="min-width: 260px; max-width: 420px;">
+        <input
+          type="search"
+          class="form-control form-control-sm"
+          placeholder="Search by name or spec (e.g., color, 128 GB, price)"
+          [(ngModel)]="searchTerm"
+          aria-label="Search items"
+        />
+      </div>
+
+      <!-- Add New button (optional) -->
+      <a class="btn btn-primary btn-sm" routerLink="/items/new" aria-label="Add new item">
+        + Add New
+      </a>
+    </div>
+  </div>
+
+  <!-- For small screens, show search below title (optional).
+       Remove this block if you don't want a duplicate search on mobile. -->
+  <div class="row g-2 mb-3 d-md-none">
+    <div class="col-12">
       <input
         type="search"
-        class="form-control"
+        class="form-control form-control-sm"
         placeholder="Search by name or spec (e.g., color, 128 GB, price)"
         [(ngModel)]="searchTerm"
         aria-label="Search items"
@@ -15,7 +44,7 @@
   </div>
 
   <!-- Loading -->
-  <div *ngIf="loading" class="alert alert-info" role="alert">
+  <div *ngIf="loading" class="alert alert-info" role="alert" aria-live="polite">
     No data yet — fetching from API...
   </div>
 
@@ -62,14 +91,17 @@
 
   <!-- No matches (search active but filtered empty) -->
   <div *ngIf="!loading && !error && filtered.length === 0 && (searchTerm || '').length > 0"
-       class="alert alert-warning" role="alert">
-    No results for "<strong>{{ searchTerm }}</strong>".
+       class="alert alert-warning d-flex justify-content-between align-items-center"
+       role="alert" aria-live="polite">
+    <span>No results for "<strong>{{ searchTerm }}</strong>".</span>
+    <a class="btn btn-sm btn-primary" routerLink="/items/new">+ Add New</a>
   </div>
 
   <!-- Empty (no data without search) -->
   <div *ngIf="!loading && !error && data.length === 0 && (searchTerm || '').length === 0"
-       class="alert alert-warning" role="alert">
-    No items found.
+       class="alert alert-warning d-flex justify-content-between align-items-center"
+       role="alert" aria-live="polite">
+    <span>No items found.</span>
+    <a class="btn btn-sm btn-primary" routerLink="/items/new">+ Add New</a>
   </div>
 </div>
-``

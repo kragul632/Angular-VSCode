@@ -1,0 +1,52 @@
+<div class="container my-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="h4 m-0">Add New Item</h2>
+    <button type="button" class="btn btn-outline-secondary" (click)="cancel()">← Back</button>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <!-- Name -->
+        <div class="mb-3">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-control" formControlName="name" placeholder="Apple MacBook Pro 16">
+          <div class="text-danger mt-1" *ngIf="form.get('name')?.touched && form.get('name')?.invalid">
+            Name is required.
+          </div>
+        </div>
+
+        <!-- Data rows -->
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <label class="form-label m-0">Data (key/value)</label>
+          <button class="btn btn-sm btn-outline-primary" type="button" (click)="addRow()">+ Add Row</button>
+        </div>
+
+        <div formArrayName="data">
+          <div class="row g-2 mb-2" *ngFor="let _ of dataArray.controls; let i = index" [formGroupName]="i">
+            <div class="col-12 col-md-5">
+              <input class="form-control" formControlName="key" placeholder="e.g., year">
+            </div>
+            <div class="col-12 col-md-5">
+              <input class="form-control" formControlName="value" placeholder="e.g., 2019">
+            </div>
+            <div class="col-12 col-md-2 d-grid">
+              <button class="btn btn-outline-danger" type="button" (click)="removeRow(i)" [disabled]="dataArray.length <= 1">
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-danger mb-2" *ngIf="error">{{ error }}</div>
+
+        <div class="d-flex justify-content-end gap-2 mt-3">
+          <button class="btn btn-secondary" type="button" (click)="cancel()">Cancel</button>
+          <button class="btn btn-primary" type="submit" [disabled]="submitting">
+            {{ submitting ? 'Saving...' : 'Save' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

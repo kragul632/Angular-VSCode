@@ -1,4 +1,4 @@
-/* Tighten the definition list labels/values */
+/* Tighten the definition list labels/values across cards */
 .specs-label,
 .specs-value {
   margin-bottom: .25rem;
@@ -14,10 +14,12 @@
   word-break: break-word;
 }
 
-/* Optional: clamp very long values (like Description) to 2 lines */
+/* If you want to clamp long values like Description to two lines: */
+/*
 .specs-value {
   display: -webkit-box;
-  
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+*/

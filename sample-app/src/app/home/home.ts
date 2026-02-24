@@ -1,7 +1,8 @@
+// src/app/home/home.ts
 import { Component, inject, NgZone, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';                    // ← add
+import { RouterModule, Router } from '@angular/router';         // ← include Router
+import { FormsModule } from '@angular/forms';
 import { Api } from '../services/api';
 import { ApiObject } from '../models/object.model';
 import { pickSpecs, ViewSpec } from '../shared/specs.util';
@@ -11,7 +12,7 @@ type ViewItem = ApiObject & { specs: ViewSpec[] };
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],            // ← add FormsModule
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './home.html',
   styleUrls: ['./home.css'],
 })
@@ -19,6 +20,7 @@ export class Home {
   private apiService = inject(Api);
   private ngZone = inject(NgZone);
   private cdr = inject(ChangeDetectorRef);
+  private router = inject(Router);                               // ← inject Router
 
   data: ViewItem[] = [];
   loading = true;
@@ -27,7 +29,24 @@ export class Home {
   // Template-driven search term
   searchTerm: string = '';
 
+  // Show success message after actions like delete (navigated here with router state)
+  successMessage: string | null = null;                          // ← add
+
   ngOnInit(): void {
+    // Pick up success message from navigation state (works when navigating from detail page)
+    // Fallback to history.state for cases like browser refresh.
+    const nav = this.router.getCurrentNavigation();
+    const state = (nav?.extras?.state as { successMessage?: string } | undefined) ?? (history.state as any);
+
+    if (state?.successMessage) {
+      this.successMessage = state.successMessage;
+      // Optional: clear message after some time
+      setTimeout(() => {
+        this.successMessage = null;
+        this.cdr.detectChanges();
+      }, 4000);
+    }
+
     this.apiService.getAll().subscribe({
       next: (res) => {
         this.ngZone.run(() => {

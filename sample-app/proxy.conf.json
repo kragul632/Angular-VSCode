@@ -1,0 +1,25 @@
+{
+  "/api": {
+    "target": "https://api.restful-api.dev",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "pathRewrite": { "^/api": "" },
+    "headers": {
+      "x-api-key": "8b192e90-9ebb-4640-ab65-6839819e1e4f"
+    }
+  },
+  
+"/echo": {
+    "target": "https://httpbin.org",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "pathRewrite": { "^/echo": "/anything" },
+    "headers": {
+      "x-api-key": "8b192e90-9ebb-4640-ab65-6839819e1e4f"
+    }
+  }
+}
+
+
